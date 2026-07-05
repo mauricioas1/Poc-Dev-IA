@@ -10,6 +10,6 @@ git push origin your-branch
 
 Suggested branches:
 - `feature/dock-webhook` for initial work
-- `chore/ci` for CI/CD changes
+- `chore/maintenance` for routine maintenance tasks
 
 Include meaningful commit messages and reference task IDs.
