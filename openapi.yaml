@@ -1,0 +1,33 @@
+openapi: 3.0.1
+info:
+  title: Dock Webhook Receiver
+  version: 0.1.0
+  description: API para receber webhooks da Dock; o payload chega criptografado e é processado assincronamente.
+paths:
+  /api/v1/webhooks/dock:
+    post:
+      summary: Recebe webhooks da Dock (payload criptografado)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Envelope criptografado contendo `encrypted_key`, `iv` e `ciphertext` em Base64
+              properties:
+                encrypted_key:
+                  type: string
+                  description: Chave AES protegida via RSA (Base64)
+                iv:
+                  type: string
+                  description: IV/nonce para AES-GCM (Base64)
+                ciphertext:
+                  type: string
+                  description: Payload criptografado (Base64)
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Requisição inválida
+        '500':
+          description: Erro interno

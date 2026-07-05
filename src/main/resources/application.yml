@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+dock:
+  private-key-path: private_key.pem
+  storage:
+    path: data/envelopes
+
+aws:
+  region: us-east-1
+  sns:
+    topic-arn: ""
+  sqs:
+    dlq-url: ""
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dock
+    username: dock
+    password: dock
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+
+logging:
+  level:
+    root: INFO
