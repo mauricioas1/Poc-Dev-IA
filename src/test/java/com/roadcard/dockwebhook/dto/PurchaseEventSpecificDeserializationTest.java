@@ -13,22 +13,42 @@ class PurchaseEventSpecificDeserializationTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
-    private String extractBlock(String md, String marker) {
-        int idx = md.indexOf(marker);
-        if (idx == -1) return null;
-        int start = md.indexOf('{', idx);
-        if (start == -1) return null;
-        // find matching closing brace naive: find next '}' followed by newline
-        int end = md.indexOf('\n}', start);
-        if (end == -1) {
-            // fallback to next blank line after start
-            end = md.indexOf("\n\n", start);
-            if (end == -1) end = md.length()-1;
-        } else {
-            end = md.indexOf('}', start);
+    private String extractBlock(String markdown, String marker) {
+        int payloadSectionIndex = markdown.indexOf("## Payloads dos eventos");
+        int markerIndex = markdown.indexOf(marker, payloadSectionIndex == -1 ? 0 : payloadSectionIndex);
+        if (markerIndex == -1) {
+            markerIndex = markdown.indexOf(marker);
         }
-        String block = md.substring(start, end+1);
-        return block;
+        if (markerIndex == -1) {
+            return null;
+        }
+
+        int start = markdown.indexOf('{', markerIndex);
+        if (start == -1) {
+            return null;
+        }
+
+        int depth = 0;
+        boolean inString = false;
+        char previous = 0;
+        for (int i = start; i < markdown.length(); i++) {
+            char current = markdown.charAt(i);
+            if (current == '"' && previous != '\\') {
+                inString = !inString;
+            }
+            if (!inString) {
+                if (current == '{') {
+                    depth++;
+                } else if (current == '}') {
+                    depth--;
+                    if (depth == 0) {
+                        return markdown.substring(start, i + 1);
+                    }
+                }
+            }
+            previous = current;
+        }
+        return null;
     }
 
     @Test

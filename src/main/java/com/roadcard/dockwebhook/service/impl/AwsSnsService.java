@@ -40,11 +40,13 @@ public class AwsSnsService implements SnsService {
                     .message(message);
 
             if (eventType != null && !eventType.isBlank()) {
-                builder.messageAttributesEntry("EventType",
+                builder.messageAttributes(java.util.Map.of(
+                        "EventType",
                         software.amazon.awssdk.services.sns.model.MessageAttributeValue.builder()
                                 .dataType("String")
                                 .stringValue(eventType)
-                                .build());
+                                .build()
+                ));
             }
 
             PublishRequest req = builder.build();

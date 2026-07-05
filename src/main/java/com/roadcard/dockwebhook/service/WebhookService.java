@@ -23,18 +23,6 @@ public class WebhookService {
     private final ObjectMapper mapper = new ObjectMapper();
     private final jakarta.validation.Validator validator;
 
-    public WebhookService(DecryptService decryptService,
-                          FilePersistenceService persistenceService,
-                          SnsService snsService,
-                          com.roadcard.dockwebhook.service.IdempotencyService idempotencyService,
-                          jakarta.validation.Validator validator) {
-        this.decryptService = decryptService;
-        this.persistenceService = persistenceService;
-        this.snsService = snsService;
-        this.idempotencyService = idempotencyService;
-        this.validator = validator;
-    }
-
     @Async
     public void processAsync(String rawEnvelope) {
         try {
