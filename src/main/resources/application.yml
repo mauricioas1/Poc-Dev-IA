@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 
 dock:
   private-key-path: private_key.pem
@@ -15,13 +15,15 @@ aws:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/dock
-    username: dock
-    password: dock
+    url: jdbc:h2:mem:dockdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: false
+    database-platform: org.hibernate.dialect.H2Dialect
 
 logging:
   level:
